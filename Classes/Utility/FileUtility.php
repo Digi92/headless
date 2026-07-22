@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -69,8 +70,13 @@ class FileUtility
     {
         $originalFileReference = clone $fileReference;
         $originalFileUrl = $fileReference->getPublicUrl();
-        $fileReferenceUid = $fileReference->getUid();
-        $uidLocal = $fileReference->getProperty('uid_local');
+        if ($fileReference instanceof FileReference) {
+            $fileReferenceUid = $fileReference->getUid();
+            $uidLocal = $fileReference->getProperty('uid_local');
+        } else {
+            $fileReferenceUid = null;
+            $uidLocal = $fileReference->getUid();
+        }
         $fileRenderer = $this->rendererRegistry->getRenderer($fileReference);
         $crop = $fileReference->getProperty('crop');
         $link = $fileReference->getProperty('link');

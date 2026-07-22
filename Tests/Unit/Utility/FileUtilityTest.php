@@ -213,8 +213,8 @@ class FileUtilityTest extends UnitTestCase
             'type' => 'image',
             'filename' => 'test-file.jpg',
             'originalUrl' => '/fileadmin/test-file.jpg',
-            'uidLocal' => null,
-            'fileReferenceUid' => 103,
+            'uidLocal' => 103,
+            'fileReferenceUid' => null,
             'size' => '71 KB',
             'dimensions' =>
                 [
@@ -241,8 +241,8 @@ class FileUtilityTest extends UnitTestCase
             'link' => null,
             'mimeType' => 'image/jpeg',
             'type' => 'image',
-            'uidLocal' => null,
-            'fileReferenceUid' => 103,
+            'uidLocal' => 103,
+            'fileReferenceUid' => null,
             'size' => '71 KB',
             'dimensions' =>
                 [
@@ -669,8 +669,8 @@ class FileUtilityTest extends UnitTestCase
                     'type' => 'image',
                     'filename' => 'test-file.jpg',
                     'originalUrl' => '/fileadmin/test-file.jpg',
-                    'uidLocal' => null,
-                    'fileReferenceUid' => 103,
+                    'uidLocal' => 103,
+                    'fileReferenceUid' => null,
                     'size' => '71 KB',
                     'dimensions' =>
                         [

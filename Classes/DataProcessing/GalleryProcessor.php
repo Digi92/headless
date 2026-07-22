@@ -225,8 +225,16 @@ class GalleryProcessor extends \TYPO3\CMS\Frontend\DataProcessing\GalleryProcess
                 $fileObj = $this->fileObjects[$fileKey] ?? null;
 
                 if ($fileObj !== null && (($fileObj['properties']['type'] ?? '') === 'image' || ($fileObj['type'] ?? '') === 'image')) {
-                    $src = $this->processorConfigurationObject->legacyReturn ? $fileObj['properties']['fileReferenceUid'] : $fileObj['fileReferenceUid'];
-                    $image = $this->getImageService()->getImage((string)$src, null, true);
+                    $properties = $this->processorConfigurationObject->legacyReturn
+                        ? ($fileObj['properties'] ?? [])
+                        : $fileObj;
+                    $fileReferenceUid = $properties['fileReferenceUid'] ?? null;
+
+                    if ($fileReferenceUid !== null) {
+                        $image = $this->getImageService()->getImage((string)$fileReferenceUid, null, true);
+                    } else {
+                        $image = $this->getImageService()->getImage((string)($properties['uidLocal'] ?? 0), null, false);
+                    }
                     $fileObj = $this->getFileUtility()->process(
                         $image,
                         $this->processorConfigurationObject->withOptions($this->mediaDimensions[$fileKey] ?? [])
