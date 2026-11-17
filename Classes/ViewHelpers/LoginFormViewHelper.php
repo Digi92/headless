@@ -83,7 +83,18 @@ class LoginFormViewHelper extends FormViewHelper
     public function render(): string
     {
         $renderingContext = $this->renderingContext;
-        $request = $renderingContext->getRequest();
+        if (
+            method_exists($renderingContext, 'getAttribute') &&
+            method_exists($renderingContext, 'hasAttribute') &&
+            $renderingContext->hasAttribute(\Psr\Http\Message\ServerRequestInterface::class)
+        ) {
+            // >= v13
+            $request = $renderingContext->getAttribute(\Psr\Http\Message\ServerRequestInterface::class);
+        } else {
+            // <= v12
+            $request = $renderingContext->getRequest();
+        }
+
         if (!$request instanceof RequestInterface) {
             throw new RuntimeException(
                 'ViewHelper f:form can be used only in extbase context and needs a request implementing extbase RequestInterface.',
@@ -156,8 +167,17 @@ class LoginFormViewHelper extends FormViewHelper
     protected function renderHiddenReferrerFields(): string
     {
         $renderingContext = $this->renderingContext;
-        /** @var RequestInterface $request */
-        $request = $renderingContext->getRequest();
+        if (
+            method_exists($renderingContext, 'getAttribute') &&
+            method_exists($renderingContext, 'hasAttribute') &&
+            $renderingContext->hasAttribute(\Psr\Http\Message\ServerRequestInterface::class)
+        ) {
+            // >= v13
+            $request = $renderingContext->getAttribute(\Psr\Http\Message\ServerRequestInterface::class);
+        } else {
+            // <= v12
+            $request = $renderingContext->getRequest();
+        }
         $extensionName = $request->getControllerExtensionName();
         $controllerName = $request->getControllerName();
         $actionName = $request->getControllerActionName();
